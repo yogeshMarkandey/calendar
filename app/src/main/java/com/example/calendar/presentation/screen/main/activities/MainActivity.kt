@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.CalendarAdapter
-import com.example.calendar.CalendarAdapter.OnItemListener
+import com.example.calendar.presentation.screen.main.CalendarAdapter
+import com.example.calendar.presentation.screen.main.CalendarAdapter.OnItemListener
 import com.example.calendar.R
 import com.example.calendar.presentation.screen.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,7 +1,8 @@
-package com.example.calendar
+package com.example.calendar.presentation.screen.main
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calendar.R
 
 
 class CalendarViewHolder(itemView: View, onItemListener: CalendarAdapter.OnItemListener) :

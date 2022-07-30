@@ -1,8 +1,9 @@
-package com.example.calendar
+package com.example.calendar.presentation.screen.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calendar.R
 
 
 class CalendarAdapter(
@@ -14,7 +15,7 @@ class CalendarAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calender_cell, parent, false)
         val layoutParams = view.layoutParams
-        layoutParams.height = (parent.height * 0.166666666).toInt()
+        layoutParams.height = (parent.width * 0.1428571).toInt()
         return CalendarViewHolder(view, onItemListener)
     }
 
