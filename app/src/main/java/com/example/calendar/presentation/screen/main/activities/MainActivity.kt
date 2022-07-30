@@ -4,17 +4,24 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.CalendarAdapter
 import com.example.calendar.CalendarAdapter.OnItemListener
 import com.example.calendar.R
+import com.example.calendar.presentation.screen.main.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnItemListener {
+
+    private val viewModel : MainViewModel by viewModels()
+
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null
@@ -32,12 +39,12 @@ class MainActivity : AppCompatActivity(), OnItemListener {
     }
 
     private fun setMonthView() {
-        monthYearText!!.text = monthYearFromDate(selectedDate)
+        monthYearText?.text = monthYearFromDate(selectedDate)
         val daysInMonth = daysInMonthArray(selectedDate)
         val calendarAdapter = CalendarAdapter(daysInMonth, this)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(applicationContext, 7)
-        calendarRecyclerView!!.layoutManager = layoutManager
-        calendarRecyclerView!!.adapter = calendarAdapter
+        calendarRecyclerView?.layoutManager = layoutManager
+        calendarRecyclerView?.adapter = calendarAdapter
     }
 
     private fun daysInMonthArray(date: LocalDate?): ArrayList<String> {
@@ -58,16 +65,16 @@ class MainActivity : AppCompatActivity(), OnItemListener {
 
     private fun monthYearFromDate(date: LocalDate?): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
-        return date!!.format(formatter)
+        return date?.format(formatter) ?: ""
     }
 
     fun previousMonthAction(view: View?) {
-        selectedDate = selectedDate!!.minusMonths(1)
+        selectedDate = selectedDate?.minusMonths(1)
         setMonthView()
     }
 
     fun nextMonthAction(view: View?) {
-        selectedDate = selectedDate!!.plusMonths(1)
+        selectedDate = selectedDate?.plusMonths(1)
         setMonthView()
     }
 
