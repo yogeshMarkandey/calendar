@@ -10,13 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.CalendarAdapter
 import com.example.calendar.CalendarAdapter.OnItemListener
 import com.example.calendar.R
+import com.example.calendar.domain.repositories.TasksRepository
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnItemListener {
+
+    //TODO: Remove this form here!
+    @Inject
+    lateinit var repo : TasksRepository
+
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null

@@ -1,7 +1,7 @@
 package com.example.calendar.presentation.di.moules
 
 import android.content.Context
-import com.example.calendar.presentation.CalendarApplication
+import com.example.calendar.data.data_source.TaskAPIs
 import com.example.calendar.utils.NetworkConstants
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -67,8 +67,15 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideCache(context: Context): Cache {
+    internal fun provideCache(@ApplicationContext context: Context): Cache {
         val httpCacheDirectory = File(context.cacheDir.absolutePath, "HttpCache")
         return Cache(httpCacheDirectory, CACHE_SIZE_BYTES)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideApi(retrofit: Retrofit): TaskAPIs {
+        return retrofit.create(TaskAPIs::class.java)
     }
 }
