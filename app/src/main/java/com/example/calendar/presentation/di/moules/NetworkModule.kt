@@ -22,13 +22,6 @@ import javax.inject.Singleton
 @Suppress("unused")
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
-    @Singleton
-    @Provides
-    fun provideApplication(@ApplicationContext app: Context): CalendarApplication {
-        return app as CalendarApplication
-    }
-
     @Provides
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit {
@@ -78,11 +71,4 @@ class NetworkModule {
         val httpCacheDirectory = File(context.cacheDir.absolutePath, "HttpCache")
         return Cache(httpCacheDirectory, CACHE_SIZE_BYTES)
     }
-
-
-//    @Provides
-//    @Singleton
-//    fun provideApi(retrofit: Retrofit): APIs {
-//        return retrofit.create(APIs::class.java)
-//    }
 }
