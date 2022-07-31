@@ -151,6 +151,32 @@
 
     </androidx.cardview.widget.CardView>
 
+    <LinearLayout
+        android:id="@+id/eventsPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:weightSum="7"
+        app:layout_constraintTop_toBottomOf="@+id/calendarCardView"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Event"
+            android:textStyle="bold"
+            android:textColor="@color/gray"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/addTaskButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskRecyclerView"
@@ -161,7 +187,7 @@
         android:paddingHorizontal="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/task_card"
-        app:layout_constraintTop_toBottomOf="@+id/calendarCardView" />
+        app:layout_constraintTop_toBottomOf="@+id/eventsPanel" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

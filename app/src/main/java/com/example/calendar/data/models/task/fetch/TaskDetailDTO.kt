@@ -11,5 +11,9 @@ data class TaskDetailDTO(
 
     @Expose
     @SerializedName("title")
-    val title: String
+    val title: String,
+
+    @Expose
+    @SerializedName("due_date")
+    val dueDate: String,
 )

@@ -19,6 +19,7 @@ fun TaskDTO.toTask() : Task {
     return Task(
         description = taskDetailDTO.description,
         id = taskId,
-        title = taskDetailDTO.title
+        title = taskDetailDTO.title,
+        dueDate = taskDetailDTO.dueDate
     )
 }

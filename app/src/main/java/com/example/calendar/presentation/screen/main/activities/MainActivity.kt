@@ -2,6 +2,7 @@ package com.example.calendar.presentation.screen.main.activities
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -26,39 +27,24 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), OnItemListener {
+class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCardClicked {
 
     private val viewModel: MainViewModel by viewModels()
     private val rvAdapter = CalendarAdapter( this)
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
-    private var todaysDate : LocalDate = LocalDate.now()
     private var selectedDate: LocalDate = LocalDate.now()
     private var dummyList = arrayListOf<CalendarDate>()
-    private var dummyTasks = listOf(
-        Task(
-            id = 0,
-            title = "Title 1",
-            description = "Des 1"
-        ),
-        Task(
-            id = 2,
-            title = "Title 2",
-            description = "Des 1"
-        ),
-        Task(
-            id = 3,
-            title = "Title 3",
-            description = "Des 1"
-        )
-    )
-    private val taskRvAdapter: TaskRVAdapter = TaskRVAdapter()
+    private val taskRvAdapter: TaskRVAdapter = TaskRVAdapter(this)
     private var taskRecyclerView: RecyclerView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel.updateSelectedDate(LocalDate.now())
         initWidgets()
+        setupObservers()
         setMonthView()
+        viewModel.getTasks()
     }
 
     private fun initWidgets() {
@@ -76,69 +62,45 @@ class MainActivity : AppCompatActivity(), OnItemListener {
         taskRecyclerView = findViewById(R.id.taskRecyclerView)
         taskRecyclerView?.adapter = taskRvAdapter
         taskRecyclerView?.layoutManager = LinearLayoutManager(this)
-        taskRvAdapter.submitList(dummyTasks)
 
+        val addTaskButton = findViewById<Button>(R.id.addTaskButton)
+
+        addTaskButton.setOnClickListener {
+            viewModel.addTasks()
+        }
+
+    }
+
+    override fun onDeleteClicked(task: Task) {
+        viewModel.deleteTasks(task)
+    }
+
+    private fun setupObservers(){
+        viewModel.tasks.observe(this){
+            if(it.isNotEmpty()){
+                taskRvAdapter.submitList(it)
+            }
+        }
     }
 
 
     private fun setMonthView() {
-        monthYearText?.text = monthYearFromDate(selectedDate)
-        val daysInMonth = daysInMonthArray(selectedDate)
+        monthYearText?.text = viewModel.monthYearFromDate(selectedDate)
+        val daysInMonth = viewModel.daysInMonthArray(selectedDate)
         rvAdapter.submitList(daysInMonth)
     }
 
-    private fun daysInMonthArray(date: LocalDate): ArrayList<CalendarDate> {
-        val daysInMonthArray = ArrayList<CalendarDate>()
-        val yearMonth = YearMonth.from(date)
-        val daysInMonth = yearMonth.lengthOfMonth()
-        val firstOfMonth = selectedDate.withDayOfMonth(1)
-        val dayOfWeek = firstOfMonth.dayOfWeek.value
-        val lastDayOfMouth = date.withDayOfMonth(date.month.length(date.isLeapYear))
-
-        val formatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val todaysFormattedDate = formatter.format(todaysDate)
-        for (i in 1..42) {
-            when {
-                i <= dayOfWeek -> {
-                    val d = firstOfMonth?.plusDays(-(dayOfWeek + 1 -i.toLong()))
-                    val p = formatter.format(d)
-                    daysInMonthArray.add(CalendarDate(day = "${d?.dayOfMonth}", date = p, isSelected = todaysFormattedDate == p))
-                }
-                i > daysInMonth + dayOfWeek -> {
-                    val d = lastDayOfMouth.plusDays((i - daysInMonth-dayOfWeek).toLong())
-                    val p = formatter.format(d)
-                    daysInMonthArray.add(CalendarDate(day = "${d?.dayOfMonth}", date = p, isSelected = todaysFormattedDate == p))
-                }
-                else -> {
-                    val d = firstOfMonth.plusDays((i-dayOfWeek-1).toLong())
-                    val p = formatter.format(d)
-
-                    val day = i - dayOfWeek
-                    daysInMonthArray.add(
-                        CalendarDate(
-                            day = "${d?.dayOfMonth}" ,// day.toString(),
-                            isSelected = todaysFormattedDate == p,
-                            date = p
-                        )
-                    )
-                }
-            }
-        }
-        return daysInMonthArray
-    }
-
-    private fun monthYearFromDate(date: LocalDate?): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
-        return date?.format(formatter) ?: ""
-    }
-
     fun previousMonthAction(view: View?) {
-        selectedDate = selectedDate.minusMonths(1)
+        val newMonth = selectedDate.minusMonths(1)
+        viewModel.updateSelectedDate(newMonth)
+        selectedDate = newMonth
         setMonthView()
     }
 
     fun nextMonthAction(view: View?) {
-        selectedDate = selectedDate.plusMonths(1)
+        val newMonth = selectedDate.plusMonths(1)
+        viewModel.updateSelectedDate(newMonth)
+        selectedDate = newMonth
         setMonthView()
     }
 

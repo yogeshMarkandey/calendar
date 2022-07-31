@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.calendar.R
 import com.example.calendar.domain.models.Task
 
-class TaskRVAdapter : ListAdapter<Task, TaskViewHolder>(callback) {
+class TaskRVAdapter(private val onTaskCardClicked: OnTaskCardClicked) : ListAdapter<Task, TaskViewHolder>(callback) {
 
     companion object{
         private val callback = object: DiffUtil.ItemCallback<Task> (){
@@ -23,7 +23,7 @@ class TaskRVAdapter : ListAdapter<Task, TaskViewHolder>(callback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_card, parent, false)
-        return TaskViewHolder(view)
+        return TaskViewHolder(view, onTaskCardClicked)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
@@ -32,4 +32,9 @@ class TaskRVAdapter : ListAdapter<Task, TaskViewHolder>(callback) {
     }
 
     fun getList() : List<Task> = currentList
+
+
+    interface OnTaskCardClicked {
+        fun onDeleteClicked(task: Task)
+    }
 }
