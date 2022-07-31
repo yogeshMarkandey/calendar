@@ -1,4 +1,4 @@
-package com.example.calendar.presentation.screen.main
+package com.example.calendar.presentation.screen.main.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
+import com.example.calendar.presentation.screen.main.viewholders.CalendarViewHolder
 
 
 class CalendarAdapter(

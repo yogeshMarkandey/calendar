@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -127,7 +126,7 @@ class MainViewModel @Inject constructor(
         selectedMonth = date
     }
 
-    fun updatedSelectedDate(date: LocalDate){
+    fun updatedSelectedDate(date: LocalDate) {
         selectedDate = date
     }
 
@@ -139,7 +138,7 @@ class MainViewModel @Inject constructor(
 
                 }
                 is State.Success -> {
-                    val date = dateTimeFormatter.format(selectedMonth)
+                    val date = dateTimeFormatter.format(selectedDate)
                     val list = it.data?.ifEmpty { emptyList() }
                     _task.postValue(list.filter { task -> task.dueDate == date })
                 }
@@ -150,12 +149,11 @@ class MainViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun addTasks() {
-        val random = Random()
+    fun addTasks(title: String, description: String) {
         val req = AddTaskRequest(
             userId = userId, AddTaskRequest.TaskDetail(
-                description = "Description : ${random.nextInt()}",
-                title = "Title: ${random.nextInt()}",
+                description = description,
+                title = title,
                 dueDate = dateTimeFormatter.format(selectedMonth)
             )
         )

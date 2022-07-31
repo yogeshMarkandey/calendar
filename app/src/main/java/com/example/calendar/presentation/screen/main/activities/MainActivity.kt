@@ -10,12 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.presentation.screen.main.CalendarAdapter
-import com.example.calendar.presentation.screen.main.CalendarAdapter.OnItemListener
+import com.example.calendar.presentation.screen.main.adapters.CalendarAdapter
+import com.example.calendar.presentation.screen.main.adapters.CalendarAdapter.OnItemListener
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.domain.models.Task
-import com.example.calendar.presentation.screen.main.TaskRVAdapter
+import com.example.calendar.presentation.screen.main.adapters.TaskRVAdapter
+import com.example.calendar.presentation.screen.main.fragments.AddTaskBottomSheetFragment
 import com.example.calendar.presentation.screen.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -24,7 +25,7 @@ import java.time.LocalDate
 class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCardClicked {
 
     private val viewModel: MainViewModel by viewModels()
-    private val rvAdapter = CalendarAdapter( this)
+    private val rvAdapter = CalendarAdapter(this)
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate = LocalDate.now()
@@ -60,7 +61,16 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         val addTaskButton = findViewById<Button>(R.id.addTaskButton)
 
         addTaskButton.setOnClickListener {
-            viewModel.addTasks()
+            val bottomSheet = AddTaskBottomSheetFragment(
+                object : AddTaskBottomSheetFragment.OnAddClickListener {
+                    override fun onClick(title: String, description: String) {
+                        viewModel.addTasks(title, description)
+                    }
+                }
+            )
+
+            bottomSheet.isCancelable = true
+            bottomSheet.show(supportFragmentManager, "add_task_bottom_sheet")
         }
 
     }
@@ -69,12 +79,12 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         viewModel.deleteTasks(task)
     }
 
-    private fun setupObservers(){
-        viewModel.tasks.observe(this){
+    private fun setupObservers() {
+        viewModel.tasks.observe(this) {
             taskRvAdapter.submitList(it)
         }
 
-        viewModel.datesToDisplay.observe(this){
+        viewModel.datesToDisplay.observe(this) {
             rvAdapter.submitList(it)
         }
     }
