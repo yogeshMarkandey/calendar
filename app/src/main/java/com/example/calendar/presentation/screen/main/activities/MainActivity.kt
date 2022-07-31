@@ -7,11 +7,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.presentation.screen.main.CalendarAdapter
 import com.example.calendar.presentation.screen.main.CalendarAdapter.OnItemListener
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
+import com.example.calendar.domain.models.Task
+import com.example.calendar.presentation.screen.main.TaskRVAdapter
 import com.example.calendar.presentation.screen.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +35,25 @@ class MainActivity : AppCompatActivity(), OnItemListener {
     private var todaysDate : LocalDate = LocalDate.now()
     private var selectedDate: LocalDate = LocalDate.now()
     private var dummyList = arrayListOf<CalendarDate>()
+    private var dummyTasks = listOf(
+        Task(
+            id = 0,
+            title = "Title 1",
+            description = "Des 1"
+        ),
+        Task(
+            id = 2,
+            title = "Title 2",
+            description = "Des 1"
+        ),
+        Task(
+            id = 3,
+            title = "Title 3",
+            description = "Des 1"
+        )
+    )
+    private val taskRvAdapter: TaskRVAdapter = TaskRVAdapter()
+    private var taskRecyclerView: RecyclerView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +71,13 @@ class MainActivity : AppCompatActivity(), OnItemListener {
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(applicationContext, 7)
         calendarRecyclerView?.layoutManager = layoutManager
         calendarRecyclerView?.adapter = rvAdapter
+
+
+        taskRecyclerView = findViewById(R.id.taskRecyclerView)
+        taskRecyclerView?.adapter = taskRvAdapter
+        taskRecyclerView?.layoutManager = LinearLayoutManager(this)
+        taskRvAdapter.submitList(dummyTasks)
+
     }
 
 
