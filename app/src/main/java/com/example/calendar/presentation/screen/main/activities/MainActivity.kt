@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView)
         monthYearText = findViewById(R.id.monthYearTV)
 
-        rvAdapter.submitList(dummyList)
+        viewModel.updateDatesToDisplay(dummyList)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(applicationContext, 7)
         calendarRecyclerView?.layoutManager = layoutManager
         calendarRecyclerView?.adapter = rvAdapter
@@ -77,17 +77,18 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
 
     private fun setupObservers(){
         viewModel.tasks.observe(this){
-            if(it.isNotEmpty()){
-                taskRvAdapter.submitList(it)
-            }
+            taskRvAdapter.submitList(it)
+        }
+
+        viewModel.datesToDisplay.observe(this){
+            rvAdapter.submitList(it)
         }
     }
-
 
     private fun setMonthView() {
         monthYearText?.text = viewModel.monthYearFromDate(selectedDate)
         val daysInMonth = viewModel.daysInMonthArray(selectedDate)
-        rvAdapter.submitList(daysInMonth)
+        viewModel.updateDatesToDisplay(daysInMonth)
     }
 
     fun previousMonthAction(view: View?) {
@@ -107,24 +108,6 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     override fun onItemClick(cal: CalendarDate) {
         val message = cal.date
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        selectDate(cal)
-    }
-
-    private fun selectDate(cal: CalendarDate){
-        CoroutineScope(Dispatchers.IO).launch{
-            val list = arrayListOf<CalendarDate>()
-            list.addAll(rvAdapter.getList())
-            val prev = list.find { it.isSelected }
-            if(prev != null){
-                val pos = list.indexOf(prev)
-                list[pos] = list[pos].copy(isSelected = false)
-            }
-            val pos = list.indexOf(cal)
-            list[pos] = list[pos].copy(isSelected = true)
-
-            withContext(Dispatchers.Main){
-                rvAdapter.submitList(list)
-            }
-        }
+        viewModel.selectDate(cal)
     }
 }
