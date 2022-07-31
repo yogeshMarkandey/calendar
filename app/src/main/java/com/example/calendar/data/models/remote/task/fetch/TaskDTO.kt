@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class TaskDTO(
     @SerializedName("task_detail")
     @Expose
-    val taskDetailDTO: TaskDetailDTO,
+    val taskDetailDTO: TaskDetailDTO?,
 
     @SerializedName("task_id")
     @Expose
@@ -18,20 +18,22 @@ data class TaskDTO(
 
 fun TaskDTO.toTask() : Task {
     return Task(
-        description = taskDetailDTO.description,
+        description = taskDetailDTO?.description ?: "",
         id = taskId,
-        title = taskDetailDTO.title,
-        dueDate = taskDetailDTO.dueDate
+        title = taskDetailDTO?.title ?: "",
+        dueDate = taskDetailDTO?.dueDate ?: "2022-07-31",
+        creationTime = taskDetailDTO?.creationTime ?: -1L,
+        tag = taskDetailDTO?.tag ?: ""
     )
 }
 
 fun TaskDTO.toTaskEntity() : TaskEntity {
     return TaskEntity(
         id = taskId,
-        description = taskDetailDTO.description,
-        title = taskDetailDTO.title,
-        dueDate = taskDetailDTO.dueDate,
-        tag = "",
-        creationTime = -1L
+        description = taskDetailDTO?.description ?: "",
+        title = taskDetailDTO?.title ?: "",
+        dueDate = taskDetailDTO?.dueDate ?: "2022-07-31",
+        tag = taskDetailDTO?.tag ?: "",
+        creationTime = taskDetailDTO?.creationTime ?: -1L
     )
 }

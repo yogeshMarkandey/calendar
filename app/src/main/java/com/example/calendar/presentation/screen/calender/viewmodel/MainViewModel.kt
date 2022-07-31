@@ -11,6 +11,7 @@ import com.example.calendar.data.models.remote.task.fetch.FetchTasksRequest
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.domain.models.Task
 import com.example.calendar.domain.repositories.TasksRepository
+import com.example.calendar.presentation.util.DateTimeHelper
 import com.example.calendar.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val tasksRepository: TasksRepository
 ) : ViewModel() {
-    private val userId: Int = 7009
+    private val userId: Int = 7010
 
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -164,12 +165,14 @@ class MainViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun addTasks(title: String, description: String) {
+    fun addTasks(title: String, description: String, tag: String) {
         val req = AddTaskRequest(
             userId = userId, AddTaskRequest.TaskDetail(
                 description = description,
                 title = title,
-                dueDate = dateTimeFormatter.format(selectedDate)
+                dueDate = dateTimeFormatter.format(selectedDate),
+                creationTime = getCreationTimestamp(),
+                tag = tag
             )
         )
         tasksRepository.addTask(req).onEach {
@@ -183,6 +186,9 @@ class MainViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun getCreationTimestamp(): Long{
+        return DateTimeHelper.getCurrentTimeStamp()
+    }
     fun deleteTasks(task: Task) {
         val req = DeleteTaskRequest(userId = userId, taskId = task.id)
         tasksRepository.deleteTask(req).onEach {

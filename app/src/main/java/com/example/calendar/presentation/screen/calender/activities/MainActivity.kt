@@ -63,8 +63,8 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         addTaskButton.setOnClickListener {
             val bottomSheet = AddTaskBottomSheetFragment(
                 object : AddTaskBottomSheetFragment.OnAddClickListener {
-                    override fun onClick(title: String, description: String) {
-                        viewModel.addTasks(title, description)
+                    override fun onClick(title: String, description: String, tags: String) {
+                        viewModel.addTasks(title, description, tags)
                     }
                 }
             )

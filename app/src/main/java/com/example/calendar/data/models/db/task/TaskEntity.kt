@@ -24,6 +24,8 @@ fun TaskEntity.toTask() : Task{
         description = description,
         title = title,
         id = id,
-        dueDate = dueDate
+        dueDate = dueDate,
+        creationTime = creationTime,
+        tag = tag
     )
 }

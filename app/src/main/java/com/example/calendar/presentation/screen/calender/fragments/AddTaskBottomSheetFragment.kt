@@ -29,14 +29,15 @@ class AddTaskBottomSheetFragment(
         val button = contentView.findViewById<Button>(R.id.addTaskButton)
         val evTitle = contentView.findViewById<EditText>(R.id.etTitle)
         val evDescription = contentView.findViewById<EditText>(R.id.etDescription)
+        val etTags = contentView.findViewById<EditText>(R.id.etTags)
         button.setOnClickListener {
-            onAddClickedListener.onClick(evTitle?.text.toString(), evDescription?.text.toString())
+            onAddClickedListener.onClick(evTitle?.text.toString(), evDescription?.text.toString(), etTags?.text.toString())
             dialog?.cancel()
         }
         return contentView
     }
 
     interface OnAddClickListener {
-        fun onClick(title: String, description: String)
+        fun onClick(title: String, description: String, tags: String)
     }
 }
