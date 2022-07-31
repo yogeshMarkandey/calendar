@@ -17,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -30,48 +29,62 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     private val userId: Int = 7009
 
-    private val dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     private val _task = MutableLiveData<List<Task>>()
     val tasks: LiveData<List<Task>> get() = _task
 
-    private val todaysDate : LocalDate = LocalDate.now()
-    private var selectedDate: LocalDate = LocalDate.now()
+    private val todaysDate: LocalDate = LocalDate.now()
+    private var selectedMonth: LocalDate = LocalDate.now()
 
     private val _datesToDisplay = MutableLiveData<List<CalendarDate>>(emptyList())
-    val datesToDisplay : LiveData<List<CalendarDate>> get() = _datesToDisplay
+    val datesToDisplay: LiveData<List<CalendarDate>> get() = _datesToDisplay
+
+    private var selectedDate = LocalDate.now()
 
     fun daysInMonthArray(date: LocalDate): ArrayList<CalendarDate> {
         val daysInMonthArray = ArrayList<CalendarDate>()
         val yearMonth = YearMonth.from(date)
         val daysInMonth = yearMonth.lengthOfMonth()
-        val firstOfMonth = selectedDate.withDayOfMonth(1)
+        val firstOfMonth = selectedMonth.withDayOfMonth(1)
         val dayOfWeek = firstOfMonth.dayOfWeek.value
         val lastDayOfMouth = date.withDayOfMonth(date.month.length(date.isLeapYear))
 
-        val todaysFormattedDate = dateTimeFormatter.format(todaysDate)
+        val selectedDateFormatted = dateTimeFormatter.format(selectedDate)
         for (i in 1..42) {
             when {
                 i <= dayOfWeek -> {
-                    val d = firstOfMonth?.plusDays(-(dayOfWeek + 1 -i.toLong()))
-                    val p = dateTimeFormatter.format(d)
-                    daysInMonthArray.add(CalendarDate(day = "${d?.dayOfMonth}", date = p, isSelected = todaysFormattedDate == p))
+                    val d = firstOfMonth?.plusDays(-(dayOfWeek + 1 - i.toLong()))
+                    val formattedDate = dateTimeFormatter.format(d)
+                    daysInMonthArray.add(
+                        CalendarDate(
+                            day = "${d?.dayOfMonth}",
+                            date = formattedDate,
+                            isSelected = selectedDateFormatted == formattedDate
+                        )
+                    )
                 }
                 i > daysInMonth + dayOfWeek -> {
-                    val d = lastDayOfMouth.plusDays((i - daysInMonth-dayOfWeek).toLong())
-                    val p = dateTimeFormatter.format(d)
-                    daysInMonthArray.add(CalendarDate(day = "${d?.dayOfMonth}", date = p, isSelected = todaysFormattedDate == p))
+                    val d = lastDayOfMouth.plusDays((i - daysInMonth - dayOfWeek).toLong())
+                    val formattedDate = dateTimeFormatter.format(d)
+                    daysInMonthArray.add(
+                        CalendarDate(
+                            day = "${d?.dayOfMonth}",
+                            date = formattedDate,
+                            isSelected = selectedDateFormatted == formattedDate
+                        )
+                    )
                 }
                 else -> {
-                    val d = firstOfMonth.plusDays((i-dayOfWeek-1).toLong())
-                    val p = dateTimeFormatter.format(d)
+                    val d = firstOfMonth.plusDays((i - dayOfWeek - 1).toLong())
+                    val formattedDate = dateTimeFormatter.format(d)
 
                     val day = i - dayOfWeek
                     daysInMonthArray.add(
                         CalendarDate(
-                            day = "${d?.dayOfMonth}" ,// day.toString(),
-                            isSelected = todaysFormattedDate == p,
-                            date = p
+                            day = "${d?.dayOfMonth}",// day.toString(),
+                            isSelected = selectedDateFormatted == formattedDate,
+                            date = formattedDate
                         )
                     )
                 }
@@ -80,22 +93,21 @@ class MainViewModel @Inject constructor(
         return daysInMonthArray
     }
 
-    fun updateDatesToDisplay(list: List<CalendarDate>){
+    fun updateDatesToDisplay(list: List<CalendarDate>) {
         _datesToDisplay.postValue(list)
     }
 
-    fun selectDate(cal: CalendarDate){
-
+    fun selectDate(cal: CalendarDate) {
         val currList = _datesToDisplay.value.orEmpty()
         val d = LocalDate.parse(cal.date, dateTimeFormatter)
-        updateSelectedDate(d)
+        updatedSelectedDate(d)
         getTasks()
 
-        CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch {
             val list = arrayListOf<CalendarDate>()
             list.addAll(currList)
             val prev = list.find { it.isSelected }
-            if(prev != null){
+            if (prev != null) {
                 val pos = list.indexOf(prev)
                 list[pos] = list[pos].copy(isSelected = false)
             }
@@ -104,13 +116,18 @@ class MainViewModel @Inject constructor(
             updateDatesToDisplay(list)
         }
     }
+
     fun monthYearFromDate(date: LocalDate?): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
         return date?.format(formatter) ?: ""
     }
 
 
-    fun updateSelectedDate(date:LocalDate){
+    fun updateSelectedMonth(date: LocalDate) {
+        selectedMonth = date
+    }
+
+    fun updatedSelectedDate(date: LocalDate){
         selectedDate = date
     }
 
@@ -122,9 +139,9 @@ class MainViewModel @Inject constructor(
 
                 }
                 is State.Success -> {
-                    val date = dateTimeFormatter.format(selectedDate)
+                    val date = dateTimeFormatter.format(selectedMonth)
                     val list = it.data?.ifEmpty { emptyList() }
-                    _task.postValue(list.filter { task ->  task.dueDate == date })
+                    _task.postValue(list.filter { task -> task.dueDate == date })
                 }
                 is State.Error -> {
 
@@ -139,7 +156,7 @@ class MainViewModel @Inject constructor(
             userId = userId, AddTaskRequest.TaskDetail(
                 description = "Description : ${random.nextInt()}",
                 title = "Title: ${random.nextInt()}",
-                dueDate = dateTimeFormatter.format(selectedDate)
+                dueDate = dateTimeFormatter.format(selectedMonth)
             )
         )
         tasksRepository.addTask(req).onEach {

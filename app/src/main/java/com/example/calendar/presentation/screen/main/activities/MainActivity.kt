@@ -18,13 +18,7 @@ import com.example.calendar.domain.models.Task
 import com.example.calendar.presentation.screen.main.TaskRVAdapter
 import com.example.calendar.presentation.screen.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCardClicked {
@@ -40,7 +34,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel.updateSelectedDate(LocalDate.now())
+        viewModel.updateSelectedMonth(LocalDate.now())
         initWidgets()
         setupObservers()
         setMonthView()
@@ -93,14 +87,14 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
 
     fun previousMonthAction(view: View?) {
         val newMonth = selectedDate.minusMonths(1)
-        viewModel.updateSelectedDate(newMonth)
+        viewModel.updateSelectedMonth(newMonth)
         selectedDate = newMonth
         setMonthView()
     }
 
     fun nextMonthAction(view: View?) {
         val newMonth = selectedDate.plusMonths(1)
-        viewModel.updateSelectedDate(newMonth)
+        viewModel.updateSelectedMonth(newMonth)
         selectedDate = newMonth
         setMonthView()
     }
