@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
 
     android:background="@color/gray"
-    tools:context=".presentation.screen.main.activities.MainActivity">
+    tools:context=".presentation.screen.calender.activities.MainActivity">
 
 
     <androidx.cardview.widget.CardView

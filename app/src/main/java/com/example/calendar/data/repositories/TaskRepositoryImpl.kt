@@ -1,10 +1,13 @@
 package com.example.calendar.data.repositories
 
-import com.example.calendar.data.data_source.TaskAPIs
-import com.example.calendar.data.models.task.add.AddTaskRequest
-import com.example.calendar.data.models.task.delete.DeleteTaskRequest
-import com.example.calendar.data.models.task.fetch.FetchTasksRequest
-import com.example.calendar.data.models.task.fetch.toTask
+import com.example.calendar.data.data_source.apis.TaskAPIs
+import com.example.calendar.data.data_source.room.TaskDao
+import com.example.calendar.data.models.db.task.TaskEntity
+import com.example.calendar.data.models.remote.task.add.AddTaskRequest
+import com.example.calendar.data.models.remote.task.delete.DeleteTaskRequest
+import com.example.calendar.data.models.remote.task.fetch.FetchTasksRequest
+import com.example.calendar.data.models.remote.task.fetch.toTask
+import com.example.calendar.data.models.remote.task.fetch.toTaskEntity
 import com.example.calendar.domain.models.Task
 import com.example.calendar.domain.repositories.TasksRepository
 import com.example.calendar.utils.State
@@ -18,6 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TaskRepositoryImpl @Inject constructor(
+    private val taskDao: TaskDao,
     private val taskAPIs: TaskAPIs
 ) : TasksRepository {
     override fun addTask(body: AddTaskRequest): Flow<State<String>> {
@@ -61,6 +65,9 @@ class TaskRepositoryImpl @Inject constructor(
                 }
                 if (response.taskDTOS != null) {
                     emit(State.Success(data = response.taskDTOS.map { it.toTask() }))
+                    response.taskDTOS.forEach{ dto ->
+                        taskDao.addTask(task = dto.toTaskEntity())
+                    }
                 } else {
                     emit(State.Error(StateError(message = response.error ?: "")))
                 }
@@ -89,6 +96,7 @@ class TaskRepositoryImpl @Inject constructor(
                     return@flow
                 }
                 if (response.status == "Success") {
+                    taskDao.deleteTaskWithId(body.taskId)
                     emit(State.Success(data = response.status.toString()))
                 } else {
                     emit(State.Error(StateError(message = response.error ?: "")))
@@ -107,4 +115,6 @@ class TaskRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun getAllTasks(): Flow<List<TaskEntity>> = taskDao.getAllTasks()
 }

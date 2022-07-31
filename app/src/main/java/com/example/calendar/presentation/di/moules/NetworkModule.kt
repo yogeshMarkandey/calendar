@@ -1,7 +1,7 @@
 package com.example.calendar.presentation.di.moules
 
 import android.content.Context
-import com.example.calendar.data.data_source.TaskAPIs
+import com.example.calendar.data.data_source.apis.TaskAPIs
 import com.example.calendar.utils.NetworkConstants
 import com.google.gson.GsonBuilder
 import dagger.Module
