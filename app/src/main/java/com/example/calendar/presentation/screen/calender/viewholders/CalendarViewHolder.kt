@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter
+import com.example.calendar.presentation.util.ViewHelper
 
 
 class CalendarViewHolder(
@@ -21,6 +22,17 @@ class CalendarViewHolder(
 
     fun bind(cal: CalendarDate) {
         dayOfMonth.text = cal.day
+
+        dayOfMonth.setTextColor(
+            ViewHelper.getColorsFromResource(
+                itemView.context,
+                when {
+                    cal.isSelected -> R.color.white
+                    cal.isPartOfCurrentMonth -> R.color.black
+                    else -> R.color.gray_medium
+                }
+            )
+        )
 
         if (cal.isSelected) enableBackground()
         else disableBackground()

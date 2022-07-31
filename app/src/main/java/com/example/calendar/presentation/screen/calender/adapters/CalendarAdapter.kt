@@ -19,13 +19,15 @@ class CalendarAdapter(
             override fun areItemsTheSame(oldItem: CalendarDate, newItem: CalendarDate): Boolean {
                 return oldItem.day == newItem.day &&
                         oldItem.date == newItem.date &&
-                        oldItem.isSelected == newItem.isSelected
+                        oldItem.isSelected == newItem.isSelected &&
+                        oldItem.isPartOfCurrentMonth == newItem.isPartOfCurrentMonth
             }
 
             override fun areContentsTheSame(oldItem: CalendarDate, newItem: CalendarDate): Boolean {
                 return oldItem.isSelected == newItem.isSelected &&
                         oldItem.day == newItem.day &&
-                        oldItem.date == newItem.date
+                        oldItem.date == newItem.date &&
+                        oldItem.isPartOfCurrentMonth == newItem.isPartOfCurrentMonth
             }
         }
     }

@@ -65,7 +65,8 @@ class MainViewModel @Inject constructor(
                         CalendarDate(
                             day = "${d?.dayOfMonth}",
                             date = formattedDate,
-                            isSelected = selectedDateFormatted == formattedDate
+                            isSelected = selectedDateFormatted == formattedDate,
+                            isPartOfCurrentMonth = false
                         )
                     )
                 }
@@ -76,7 +77,8 @@ class MainViewModel @Inject constructor(
                         CalendarDate(
                             day = "${d?.dayOfMonth}",
                             date = formattedDate,
-                            isSelected = selectedDateFormatted == formattedDate
+                            isSelected = selectedDateFormatted == formattedDate,
+                            isPartOfCurrentMonth = false
                         )
                     )
                 }
@@ -89,7 +91,8 @@ class MainViewModel @Inject constructor(
                         CalendarDate(
                             day = "${d?.dayOfMonth}",// day.toString(),
                             isSelected = selectedDateFormatted == formattedDate,
-                            date = formattedDate
+                            date = formattedDate,
+                            isPartOfCurrentMonth = true
                         )
                     )
                 }

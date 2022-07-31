@@ -18,6 +18,7 @@ import com.example.calendar.domain.models.Task
 import com.example.calendar.presentation.screen.calender.adapters.TaskRVAdapter
 import com.example.calendar.presentation.screen.calender.fragments.AddTaskBottomSheetFragment
 import com.example.calendar.presentation.screen.calender.viewmodel.MainViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         taskRecyclerView?.adapter = taskRvAdapter
         taskRecyclerView?.layoutManager = LinearLayoutManager(this)
 
-        val addTaskButton = findViewById<Button>(R.id.addTaskButton)
+        val addTaskButton = findViewById<FloatingActionButton>(R.id.addTaskButton)
 
         addTaskButton.setOnClickListener {
             val bottomSheet = AddTaskBottomSheetFragment(

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,185 +8,207 @@
     android:background="@color/white"
     tools:context=".presentation.screen.calender.activities.MainActivity">
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/calendarCardView"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
+        android:background="#fcfdfd"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:background="@color/white"
-        app:cardCornerRadius="8dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="4dp">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fcfdfd"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <LinearLayout
+                    android:id="@+id/calendarHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="previousMonthAction"
+                        android:text="@string/back"
+                        android:src="@drawable/ic_chevron_left"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:scaleType="center"
+                        app:tint="@color/dark_peach" />
+
+                    <TextView
+                        android:id="@+id/monthYearTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Feb 2021"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="nextMonthAction"
+                        android:src="@drawable/ic_chevron_right"
+                        android:scaleType="center"
+                        android:text="@string/forward"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:tint="@color/dark_peach"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dayNames"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarHeader">
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="S"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="M"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="T"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="W"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="T"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="F"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TextViewLato.ExtraLargeXL.Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="S"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/calendarRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="100dp"
+                    app:layout_constraintTop_toBottomOf="@+id/dayNames" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <LinearLayout
+            android:id="@+id/eventsPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingVertical="14dp"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/calendarHeader"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/gray"
-                    android:onClick="previousMonthAction"
-                    android:text="@string/back"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/monthYearTV"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Feb 2021"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/gray"
-                    android:onClick="nextMonthAction"
-                    android:text="@string/forward"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/dayNames"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/calendarHeader">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="S"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="M"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="T"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="W"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="T"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="F"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="S"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp" />
-
-
-            </LinearLayout>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendarRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:minHeight="100dp"
-                app:layout_constraintTop_toBottomOf="@+id/dayNames" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-        android:id="@+id/eventsPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:weightSum="7"
-        app:layout_constraintTop_toBottomOf="@+id/calendarCardView"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:text="Event"
-            android:textStyle="bold"
-            android:textColor="@color/gray"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/addTaskButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Add"
-            />
-    </LinearLayout>
+                android:layout_weight="6"
+                android:text="Schedule"
+                style="@style/TextViewLato.ExtraLargeXL.Bold"
+                android:textAlignment="viewStart"
+                android:textColor="?attr/colorSecondary"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="8dp"
+        android:fillViewport="true"
         android:minHeight="100dp"
         android:paddingHorizontal="12dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/task_card"
-        app:layout_constraintTop_toBottomOf="@+id/eventsPanel" />
+        tools:listitem="@layout/task_card" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="36dp"
+        app:fabSize="normal"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Add task" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

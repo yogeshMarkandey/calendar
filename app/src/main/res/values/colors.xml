@@ -22,4 +22,6 @@
     <color name="yellow">#fca014</color>
     <color name="yellow_light">#fdeadc</color>
     <color name="yellow_medium">#eeaf77</color>
+    <color name="gray_light">#f1f1f0</color>
+    <color name="gray_medium">#d5d5d4</color>
 </resources>
