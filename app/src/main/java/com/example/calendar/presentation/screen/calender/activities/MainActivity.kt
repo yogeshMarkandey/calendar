@@ -2,19 +2,19 @@ package com.example.calendar.presentation.screen.calender.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter
-import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter.OnItemListener
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.domain.models.Task
+import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter
+import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter.OnItemListener
 import com.example.calendar.presentation.screen.calender.adapters.TaskRVAdapter
 import com.example.calendar.presentation.screen.calender.fragments.AddTaskBottomSheetFragment
 import com.example.calendar.presentation.screen.calender.viewmodel.MainViewModel
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     private var dummyList = arrayListOf<CalendarDate>()
     private val taskRvAdapter: TaskRVAdapter = TaskRVAdapter(this)
     private var taskRecyclerView: RecyclerView? = null
+    private var noTaskAddedView: ConstraintLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     }
 
     private fun initWidgets() {
+        noTaskAddedView = findViewById(R.id.noTaskAvailable)
         dummyList = arrayListOf<CalendarDate>()
         for (v in 1..42) dummyList.add(CalendarDate("", date = "$v"))
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView)
@@ -83,6 +85,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     private fun setupObservers() {
         viewModel.tasks.observe(this) {
             taskRvAdapter.submitList(it)
+            noTaskAddedView?.visibility = if(it.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.datesToDisplay.observe(this) {

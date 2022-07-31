@@ -48,13 +48,13 @@ class TaskViewHolder(
                 tvDescription.setTextColor(getColorsFromResource(itemView.context, R.color.yellow_medium))
             }
             ColorSchemeType.Green -> {
-                rootLayout.setBackgroundColor(getColorsFromResource(itemView.context, R.color.green_light))
+                rootLayout.setCardBackgroundColor(getColorsFromResource(itemView.context, R.color.green_light))
                 sideView.setBackgroundColor(getColorsFromResource(itemView.context, R.color.green))
                 tvTitle.setTextColor(getColorsFromResource(itemView.context, R.color.green))
                 tvDescription.setTextColor(getColorsFromResource(itemView.context, R.color.green_medium))
             }
             ColorSchemeType.Blue -> {
-                rootLayout.setBackgroundColor(getColorsFromResource(itemView.context, R.color.blue_light))
+                rootLayout.setCardBackgroundColor(getColorsFromResource(itemView.context, R.color.blue_light))
                 sideView.setBackgroundColor(getColorsFromResource(itemView.context, R.color.blue))
                 tvTitle.setTextColor(getColorsFromResource(itemView.context, R.color.blue))
                 tvDescription.setTextColor(getColorsFromResource(itemView.context, R.color.blue_medium))
