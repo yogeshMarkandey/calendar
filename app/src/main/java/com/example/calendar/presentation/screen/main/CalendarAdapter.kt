@@ -1,16 +1,34 @@
 package com.example.calendar.presentation.screen.main
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.example.calendar.R
+import com.example.calendar.domain.models.CalendarDate
 
 
 class CalendarAdapter(
-    private val daysOfMonth: ArrayList<String>,
     private val onItemListener: OnItemListener
-) :
-    RecyclerView.Adapter<CalendarViewHolder>() {
+) : ListAdapter<CalendarDate, CalendarViewHolder>(callback) {
+
+    companion object{
+        val callback = object : DiffUtil.ItemCallback<CalendarDate>(){
+            override fun areItemsTheSame(oldItem: CalendarDate, newItem: CalendarDate): Boolean {
+                return oldItem.day == newItem.day &&
+                        oldItem.date == newItem.date &&
+                        oldItem.isSelected == newItem.isSelected
+            }
+
+            override fun areContentsTheSame(oldItem: CalendarDate, newItem: CalendarDate): Boolean {
+                return oldItem.isSelected == newItem.isSelected &&
+                        oldItem.day == newItem.day &&
+                        oldItem.date == newItem.date
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calender_cell, parent, false)
@@ -19,15 +37,18 @@ class CalendarAdapter(
         return CalendarViewHolder(view, onItemListener)
     }
 
+    fun getList() : List<CalendarDate> = currentList
+
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.dayOfMonth.text = daysOfMonth[position]
+        val date = getList()[position]
+        holder.bind(date)
     }
 
     override fun getItemCount(): Int {
-        return daysOfMonth.size
+        return getList().size
     }
 
     interface OnItemListener {
-        fun onItemClick(position: Int, dayText: String?)
+        fun onItemClick(cal: CalendarDate)
     }
 }
