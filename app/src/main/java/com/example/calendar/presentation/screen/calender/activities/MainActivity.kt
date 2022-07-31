@@ -1,4 +1,4 @@
-package com.example.calendar.presentation.screen.main.activities
+package com.example.calendar.presentation.screen.calender.activities
 
 import android.os.Bundle
 import android.view.View
@@ -10,14 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.presentation.screen.main.adapters.CalendarAdapter
-import com.example.calendar.presentation.screen.main.adapters.CalendarAdapter.OnItemListener
+import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter
+import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter.OnItemListener
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.domain.models.Task
-import com.example.calendar.presentation.screen.main.adapters.TaskRVAdapter
-import com.example.calendar.presentation.screen.main.fragments.AddTaskBottomSheetFragment
-import com.example.calendar.presentation.screen.main.viewmodel.MainViewModel
+import com.example.calendar.presentation.screen.calender.adapters.TaskRVAdapter
+import com.example.calendar.presentation.screen.calender.fragments.AddTaskBottomSheetFragment
+import com.example.calendar.presentation.screen.calender.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 

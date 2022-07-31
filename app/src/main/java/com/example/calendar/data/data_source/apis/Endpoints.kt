@@ -1,4 +1,4 @@
-package com.example.calendar.data.data_source
+package com.example.calendar.data.data_source.apis
 
 object Endpoints {
     const val ADD_TASK = "api/storeCalendarTask"

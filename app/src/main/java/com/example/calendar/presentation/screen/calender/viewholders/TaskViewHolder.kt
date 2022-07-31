@@ -1,11 +1,11 @@
-package com.example.calendar.presentation.screen.main.viewholders
+package com.example.calendar.presentation.screen.calender.viewholders
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
 import com.example.calendar.domain.models.Task
-import com.example.calendar.presentation.screen.main.adapters.TaskRVAdapter
+import com.example.calendar.presentation.screen.calender.adapters.TaskRVAdapter
 
 class TaskViewHolder(
     itemView: View,

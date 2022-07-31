@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true"
         android:name=".presentation.CalendarApplication">
         <activity
-            android:name="com.example.calendar.presentation.screen.main.activities.MainActivity"
+            android:name="com.example.calendar.presentation.screen.calender.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

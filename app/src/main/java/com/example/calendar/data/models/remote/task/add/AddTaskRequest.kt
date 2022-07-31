@@ -1,4 +1,4 @@
-package com.example.calendar.data.models.task.add
+package com.example.calendar.data.models.remote.task.add
 
 
 import com.google.gson.annotations.Expose

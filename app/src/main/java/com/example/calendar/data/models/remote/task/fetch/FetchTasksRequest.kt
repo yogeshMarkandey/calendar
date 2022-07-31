@@ -1,4 +1,4 @@
-package com.example.calendar.data.models.task.fetch
+package com.example.calendar.data.models.remote.task.fetch
 
 
 import com.google.gson.annotations.SerializedName

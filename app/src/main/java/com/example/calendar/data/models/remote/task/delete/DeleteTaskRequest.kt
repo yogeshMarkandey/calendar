@@ -1,4 +1,4 @@
-package com.example.calendar.data.models.task.delete
+package com.example.calendar.data.models.remote.task.delete
 
 
 import com.google.gson.annotations.Expose

@@ -1,4 +1,4 @@
-package com.example.calendar.presentation.screen.main.adapters
+package com.example.calendar.presentation.screen.calender.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.calendar.R
 import com.example.calendar.domain.models.Task
-import com.example.calendar.presentation.screen.main.viewholders.TaskViewHolder
+import com.example.calendar.presentation.screen.calender.viewholders.TaskViewHolder
 
 class TaskRVAdapter(private val onTaskCardClicked: OnTaskCardClicked) :
     ListAdapter<Task, TaskViewHolder>(

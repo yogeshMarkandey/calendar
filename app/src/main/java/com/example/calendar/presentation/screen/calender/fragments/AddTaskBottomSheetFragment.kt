@@ -1,4 +1,4 @@
-package com.example.calendar.presentation.screen.main.fragments
+package com.example.calendar.presentation.screen.calender.fragments
 
 
 import android.os.Bundle

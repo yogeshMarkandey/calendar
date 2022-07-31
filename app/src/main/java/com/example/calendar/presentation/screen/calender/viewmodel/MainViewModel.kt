@@ -1,13 +1,13 @@
-package com.example.calendar.presentation.screen.main.viewmodel
+package com.example.calendar.presentation.screen.calender.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calendar.data.models.db.task.toTask
-import com.example.calendar.data.models.task.add.AddTaskRequest
-import com.example.calendar.data.models.task.delete.DeleteTaskRequest
-import com.example.calendar.data.models.task.fetch.FetchTasksRequest
+import com.example.calendar.data.models.remote.task.add.AddTaskRequest
+import com.example.calendar.data.models.remote.task.delete.DeleteTaskRequest
+import com.example.calendar.data.models.remote.task.fetch.FetchTasksRequest
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.domain.models.Task
 import com.example.calendar.domain.repositories.TasksRepository

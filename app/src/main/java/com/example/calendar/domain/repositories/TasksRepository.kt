@@ -1,9 +1,9 @@
 package com.example.calendar.domain.repositories
 
 import com.example.calendar.data.models.db.task.TaskEntity
-import com.example.calendar.data.models.task.add.AddTaskRequest
-import com.example.calendar.data.models.task.delete.DeleteTaskRequest
-import com.example.calendar.data.models.task.fetch.FetchTasksRequest
+import com.example.calendar.data.models.remote.task.add.AddTaskRequest
+import com.example.calendar.data.models.remote.task.delete.DeleteTaskRequest
+import com.example.calendar.data.models.remote.task.fetch.FetchTasksRequest
 import com.example.calendar.domain.models.Task
 import com.example.calendar.utils.State
 import kotlinx.coroutines.flow.Flow
