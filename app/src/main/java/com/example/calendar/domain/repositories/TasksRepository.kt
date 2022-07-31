@@ -1,5 +1,6 @@
 package com.example.calendar.domain.repositories
 
+import com.example.calendar.data.models.db.task.TaskEntity
 import com.example.calendar.data.models.task.add.AddTaskRequest
 import com.example.calendar.data.models.task.delete.DeleteTaskRequest
 import com.example.calendar.data.models.task.fetch.FetchTasksRequest
@@ -11,4 +12,5 @@ interface TasksRepository {
     fun addTask(body: AddTaskRequest) : Flow<State<String>>
     fun fetchTask(body: FetchTasksRequest) : Flow<State<List<Task>>>
     fun deleteTask(body: DeleteTaskRequest) : Flow<State<String>>
+    fun getAllTasks() : Flow<List<TaskEntity>>
 }

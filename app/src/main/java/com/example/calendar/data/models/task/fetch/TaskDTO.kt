@@ -1,6 +1,7 @@
 package com.example.calendar.data.models.task.fetch
 
 
+import com.example.calendar.data.models.db.task.TaskEntity
 import com.example.calendar.domain.models.Task
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -21,5 +22,16 @@ fun TaskDTO.toTask() : Task {
         id = taskId,
         title = taskDetailDTO.title,
         dueDate = taskDetailDTO.dueDate
+    )
+}
+
+fun TaskDTO.toTaskEntity() : TaskEntity {
+    return TaskEntity(
+        id = taskId,
+        description = taskDetailDTO.description,
+        title = taskDetailDTO.title,
+        dueDate = taskDetailDTO.dueDate,
+        tag = "",
+        creationTime = -1L
     )
 }

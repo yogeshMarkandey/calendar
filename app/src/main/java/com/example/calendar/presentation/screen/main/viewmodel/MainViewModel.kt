@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.calendar.data.models.db.task.toTask
 import com.example.calendar.data.models.task.add.AddTaskRequest
 import com.example.calendar.data.models.task.delete.DeleteTaskRequest
 import com.example.calendar.data.models.task.fetch.FetchTasksRequest
@@ -40,6 +41,10 @@ class MainViewModel @Inject constructor(
     val datesToDisplay: LiveData<List<CalendarDate>> get() = _datesToDisplay
 
     private var selectedDate = LocalDate.now()
+
+    init {
+        getAllTasks()
+    }
 
     fun daysInMonthArray(date: LocalDate): ArrayList<CalendarDate> {
         val daysInMonthArray = ArrayList<CalendarDate>()
@@ -92,6 +97,17 @@ class MainViewModel @Inject constructor(
         return daysInMonthArray
     }
 
+    private var allTasks = emptyList<Task>()
+    private fun getAllTasks(){
+        viewModelScope.launch {
+            tasksRepository.getAllTasks().collect{
+                val list = it.map { t -> t.toTask() }
+                allTasks = list
+                updateTasksList()
+            }
+        }
+    }
+
     fun updateDatesToDisplay(list: List<CalendarDate>) {
         _datesToDisplay.postValue(list)
     }
@@ -100,7 +116,7 @@ class MainViewModel @Inject constructor(
         val currList = _datesToDisplay.value.orEmpty()
         val d = LocalDate.parse(cal.date, dateTimeFormatter)
         updatedSelectedDate(d)
-        getTasks()
+        updateTasksList()
 
         CoroutineScope(Dispatchers.IO).launch {
             val list = arrayListOf<CalendarDate>()
@@ -111,16 +127,23 @@ class MainViewModel @Inject constructor(
                 list[pos] = list[pos].copy(isSelected = false)
             }
             val pos = list.indexOf(cal)
-            list[pos] = list[pos].copy(isSelected = true)
+            if(pos != -1){
+                list[pos] = list[pos].copy(isSelected = true)
+            }
             updateDatesToDisplay(list)
         }
     }
 
+    private fun updateTasksList(){
+        val list = allTasks
+        val date = dateTimeFormatter.format(selectedDate)
+        val filteredList = list.filter { task -> task.dueDate == date }
+        _task.postValue(filteredList)
+    }
     fun monthYearFromDate(date: LocalDate?): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
         return date?.format(formatter) ?: ""
     }
-
 
     fun updateSelectedMonth(date: LocalDate) {
         selectedMonth = date
@@ -134,17 +157,9 @@ class MainViewModel @Inject constructor(
         val req = FetchTasksRequest(userId = userId)
         tasksRepository.fetchTask(req).onEach {
             when (it) {
-                is State.Loading -> {
-
-                }
-                is State.Success -> {
-                    val date = dateTimeFormatter.format(selectedDate)
-                    val list = it.data?.ifEmpty { emptyList() }
-                    _task.postValue(list.filter { task -> task.dueDate == date })
-                }
-                is State.Error -> {
-
-                }
+                is State.Loading -> {}
+                is State.Success -> {}
+                is State.Error -> {}
             }
         }.launchIn(viewModelScope)
     }
@@ -154,20 +169,16 @@ class MainViewModel @Inject constructor(
             userId = userId, AddTaskRequest.TaskDetail(
                 description = description,
                 title = title,
-                dueDate = dateTimeFormatter.format(selectedMonth)
+                dueDate = dateTimeFormatter.format(selectedDate)
             )
         )
         tasksRepository.addTask(req).onEach {
             when (it) {
-                is State.Loading -> {
-
-                }
+                is State.Loading -> {}
                 is State.Success -> {
                     getTasks()
                 }
-                is State.Error -> {
-
-                }
+                is State.Error -> {}
             }
         }.launchIn(viewModelScope)
     }
@@ -176,15 +187,9 @@ class MainViewModel @Inject constructor(
         val req = DeleteTaskRequest(userId = userId, taskId = task.id)
         tasksRepository.deleteTask(req).onEach {
             when (it) {
-                is State.Loading -> {
-
-                }
-                is State.Success -> {
-                    getTasks()
-                }
-                is State.Error -> {
-
-                }
+                is State.Loading -> {}
+                is State.Success -> { getTasks() }
+                is State.Error -> {}
             }
         }.launchIn(viewModelScope)
     }
