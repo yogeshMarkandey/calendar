@@ -4,5 +4,6 @@ data class Task(
     val description: String,
     val title: String,
     val id: Int,
+    val dueDate: String
 )
 
