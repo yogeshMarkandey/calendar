@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextViewLato" parent="@style/TextAppearance.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/brown</item>
+        <item name="background">@android:color/transparent</item>
+    </style>
+
+
+
+
+    <!-- TextViewLato style for 9 / 10 sp text -->
+    <style name="TextViewLato.XXSmall">
+        <item name="android:textSize">@dimen/sp_10</item>
+    </style>
+
+    <style name="TextViewLato.XXSmall.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.XXSmall.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.XXSmall.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+
+    <!-- TextViewLato style for 12 / 14 sp text -->
+    <style name="TextViewLato.XSmall">
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+    <style name="TextViewLato.XSmall.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.XSmall.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextViewLato.XSmall.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+
+    <!-- TextViewLato style for 16 / 18 sp text -->
+    <style name="TextViewLato.Medium">
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+    <style name="TextViewLato.Medium.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.Medium.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.Medium.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+
+    <!-- TextViewLato style for 18 / 22 sp text -->
+    <style name="TextViewLato.Large">
+        <item name="android:textSize">@dimen/sp_20</item>
+    </style>
+    <style name="TextViewLato.Large.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.Large.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.Large.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+
+    <!-- TextViewLato style for 22 / 24 sp text -->
+    <style name="TextViewLato.ExtraLarge">
+        <item name="android:textSize">@dimen/sp_24</item>
+    </style>
+    <style name="TextViewLato.ExtraLarge.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.ExtraLarge.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.ExtraLarge.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <!-- TextViewLato style for 24 / 28 sp text -->
+    <style name="TextViewLato.ExtraLargeXL">
+        <item name="android:textSize">@dimen/sp_28</item>
+    </style>
+    <style name="TextViewLato.ExtraLargeXL.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.ExtraLargeXL.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.ExtraLargeXL.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <!-- TextViewLato style for 28 / 32 sp text -->
+    <style name="TextViewLato.ExtraLargeXXL">
+        <item name="android:textSize">@dimen/sp_32</item>
+    </style>
+    <style name="TextViewLato.ExtraLargeXXL.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.ExtraLargeXXL.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.ExtraLargeXXL.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+
+    <!-- TextViewLato style for 86 / 88 sp text -->
+    <style name="TextViewLato.ExtraLarge4X">
+        <item name="android:textSize">@dimen/sp_96</item>
+    </style>
+    <style name="TextViewLato.ExtraLarge4X.Regular">
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="TextViewLato.ExtraLarge4X.Bold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="TextViewLato.ExtraLarge4X.SemiBold">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_24">24sp</dimen>
+    <dimen name="sp_28">28sp</dimen>
+    <dimen name="sp_32">32sp</dimen>
+    <dimen name="sp_96">96sp</dimen>
+</resources>

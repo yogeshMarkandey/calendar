@@ -65,7 +65,8 @@ class MainViewModel @Inject constructor(
                         CalendarDate(
                             day = "${d?.dayOfMonth}",
                             date = formattedDate,
-                            isSelected = selectedDateFormatted == formattedDate
+                            isSelected = selectedDateFormatted == formattedDate,
+                            isPartOfCurrentMonth = false
                         )
                     )
                 }
@@ -76,7 +77,8 @@ class MainViewModel @Inject constructor(
                         CalendarDate(
                             day = "${d?.dayOfMonth}",
                             date = formattedDate,
-                            isSelected = selectedDateFormatted == formattedDate
+                            isSelected = selectedDateFormatted == formattedDate,
+                            isPartOfCurrentMonth = false
                         )
                     )
                 }
@@ -89,7 +91,8 @@ class MainViewModel @Inject constructor(
                         CalendarDate(
                             day = "${d?.dayOfMonth}",// day.toString(),
                             isSelected = selectedDateFormatted == formattedDate,
-                            date = formattedDate
+                            date = formattedDate,
+                            isPartOfCurrentMonth = true
                         )
                     )
                 }
@@ -113,6 +116,18 @@ class MainViewModel @Inject constructor(
         _datesToDisplay.postValue(list)
     }
 
+    fun getTotalTaskForTheDay(list: List<CalendarDate>){
+        viewModelScope.launch {
+            val dates = ArrayList<CalendarDate>()
+            val allTask = allTasks
+            list.forEach { date ->
+                val l = allTask.filter { it.dueDate ==  date.date}
+                dates.add(date.copy(taskCount = l.size))
+            }
+            updateDatesToDisplay(dates)
+        }
+    }
+
     fun selectDate(cal: CalendarDate) {
         val currList = _datesToDisplay.value.orEmpty()
         val d = LocalDate.parse(cal.date, dateTimeFormatter)
@@ -132,6 +147,7 @@ class MainViewModel @Inject constructor(
                 list[pos] = list[pos].copy(isSelected = true)
             }
             updateDatesToDisplay(list)
+            getTotalTaskForTheDay(list)
         }
     }
 

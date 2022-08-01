@@ -2,22 +2,27 @@ package com.example.calendar.presentation.screen.calender.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter
-import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter.OnItemListener
 import com.example.calendar.R
 import com.example.calendar.domain.models.CalendarDate
 import com.example.calendar.domain.models.Task
+import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter
+import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapter.OnItemListener
 import com.example.calendar.presentation.screen.calender.adapters.TaskRVAdapter
 import com.example.calendar.presentation.screen.calender.fragments.AddTaskBottomSheetFragment
 import com.example.calendar.presentation.screen.calender.viewmodel.MainViewModel
+import com.example.calendar.presentation.util.ViewHelper.checkConnection
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -32,8 +37,11 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     private var dummyList = arrayListOf<CalendarDate>()
     private val taskRvAdapter: TaskRVAdapter = TaskRVAdapter(this)
     private var taskRecyclerView: RecyclerView? = null
+    private var noTaskAddedView: ConstraintLayout? = null
+    private lateinit var rootLayout: CoordinatorLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
         setContentView(R.layout.activity_main)
         viewModel.updateSelectedMonth(LocalDate.now())
         initWidgets()
@@ -43,6 +51,8 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     }
 
     private fun initWidgets() {
+        noTaskAddedView = findViewById(R.id.noTaskAvailable)
+        rootLayout = findViewById(R.id.rootLayout)
         dummyList = arrayListOf<CalendarDate>()
         for (v in 1..42) dummyList.add(CalendarDate("", date = "$v"))
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView)
@@ -58,13 +68,22 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         taskRecyclerView?.adapter = taskRvAdapter
         taskRecyclerView?.layoutManager = LinearLayoutManager(this)
 
-        val addTaskButton = findViewById<Button>(R.id.addTaskButton)
+        val addTaskButton = findViewById<FloatingActionButton>(R.id.addTaskButton)
 
         addTaskButton.setOnClickListener {
             val bottomSheet = AddTaskBottomSheetFragment(
                 object : AddTaskBottomSheetFragment.OnAddClickListener {
                     override fun onClick(title: String, description: String, tags: String) {
-                        viewModel.addTasks(title, description, tags)
+                        if (checkConnection(this@MainActivity)) {
+                            viewModel.addTasks(title, description, tags)
+                        } else {
+                            Snackbar.make(
+                                this@MainActivity,
+                                rootLayout,
+                                "No Internet. Please Try again later.",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             )
@@ -76,12 +95,21 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     }
 
     override fun onDeleteClicked(task: Task) {
-        viewModel.deleteTasks(task)
+        if (checkConnection(this)) {
+            viewModel.deleteTasks(task)
+        } else {
+            Snackbar.make(
+                this.rootLayout,
+                "No Internet. Please try again later.",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun setupObservers() {
         viewModel.tasks.observe(this) {
             taskRvAdapter.submitList(it)
+            noTaskAddedView?.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.datesToDisplay.observe(this) {
@@ -93,6 +121,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         monthYearText?.text = viewModel.monthYearFromDate(selectedDate)
         val daysInMonth = viewModel.daysInMonthArray(selectedDate)
         viewModel.updateDatesToDisplay(daysInMonth)
+        viewModel.getTotalTaskForTheDay(daysInMonth)
     }
 
     fun previousMonthAction(view: View?) {
@@ -110,8 +139,6 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     }
 
     override fun onItemClick(cal: CalendarDate) {
-        val message = cal.date
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         viewModel.selectDate(cal)
     }
 }
