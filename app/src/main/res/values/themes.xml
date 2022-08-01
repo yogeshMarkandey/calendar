@@ -18,4 +18,13 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
+
+    <style name="Theme.Calendar.Starting" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">@color/peach</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_icon_rounded</item>
+        <item name="windowSplashScreenAnimationDuration">200</item>
+        <item name="postSplashScreenTheme">@style/Theme.Calendar</item>
+
+    </style>
 </resources>
