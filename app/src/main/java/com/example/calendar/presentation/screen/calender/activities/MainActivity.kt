@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,9 @@ import com.example.calendar.presentation.screen.calender.adapters.CalendarAdapte
 import com.example.calendar.presentation.screen.calender.adapters.TaskRVAdapter
 import com.example.calendar.presentation.screen.calender.fragments.AddTaskBottomSheetFragment
 import com.example.calendar.presentation.screen.calender.viewmodel.MainViewModel
+import com.example.calendar.presentation.util.ViewHelper.checkConnection
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     private val taskRvAdapter: TaskRVAdapter = TaskRVAdapter(this)
     private var taskRecyclerView: RecyclerView? = null
     private var noTaskAddedView: ConstraintLayout? = null
+    private lateinit var rootLayout: CoordinatorLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
 
     private fun initWidgets() {
         noTaskAddedView = findViewById(R.id.noTaskAvailable)
+        rootLayout = findViewById(R.id.rootLayout)
         dummyList = arrayListOf<CalendarDate>()
         for (v in 1..42) dummyList.add(CalendarDate("", date = "$v"))
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView)
@@ -67,7 +72,16 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
             val bottomSheet = AddTaskBottomSheetFragment(
                 object : AddTaskBottomSheetFragment.OnAddClickListener {
                     override fun onClick(title: String, description: String, tags: String) {
-                        viewModel.addTasks(title, description, tags)
+                        if (checkConnection(this@MainActivity)) {
+                            viewModel.addTasks(title, description, tags)
+                        } else {
+                            Snackbar.make(
+                                this@MainActivity,
+                                rootLayout,
+                                "No Internet. Please Try again later.",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             )
@@ -79,13 +93,21 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     }
 
     override fun onDeleteClicked(task: Task) {
-        viewModel.deleteTasks(task)
+        if (checkConnection(this)) {
+            viewModel.deleteTasks(task)
+        } else {
+            Snackbar.make(
+                this.rootLayout,
+                "No Internet. Please try again later.",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun setupObservers() {
         viewModel.tasks.observe(this) {
             taskRvAdapter.submitList(it)
-            noTaskAddedView?.visibility = if(it.isEmpty()) View.VISIBLE else View.GONE
+            noTaskAddedView?.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.datesToDisplay.observe(this) {
