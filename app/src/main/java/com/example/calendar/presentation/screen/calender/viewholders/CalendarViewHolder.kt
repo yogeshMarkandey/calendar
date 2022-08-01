@@ -19,6 +19,7 @@ class CalendarViewHolder(
     private val itemListener: CalendarAdapter.OnItemListener = onItemListener
     val rootLayout: ConstraintLayout = itemView.findViewById(R.id.calendar_cell_root)
     private val cellBackgroundView: View = itemView.findViewById(R.id.cell_background)
+    private val taskIndicator: View = itemView.findViewById(R.id.taskIndicator)
 
     fun bind(cal: CalendarDate) {
         dayOfMonth.text = cal.day
@@ -33,6 +34,10 @@ class CalendarViewHolder(
                 }
             )
         )
+
+        taskIndicator.visibility =
+            if (cal.taskCount > 0) View.VISIBLE
+            else View.GONE
 
         if (cal.isSelected) enableBackground()
         else disableBackground()

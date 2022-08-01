@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
         monthYearText?.text = viewModel.monthYearFromDate(selectedDate)
         val daysInMonth = viewModel.daysInMonthArray(selectedDate)
         viewModel.updateDatesToDisplay(daysInMonth)
+        viewModel.getTotalTaskForTheDay(daysInMonth)
     }
 
     fun previousMonthAction(view: View?) {
@@ -136,8 +137,6 @@ class MainActivity : AppCompatActivity(), OnItemListener, TaskRVAdapter.OnTaskCa
     }
 
     override fun onItemClick(cal: CalendarDate) {
-        val message = cal.date
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         viewModel.selectDate(cal)
     }
 }

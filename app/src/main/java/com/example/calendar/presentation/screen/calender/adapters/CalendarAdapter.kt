@@ -27,7 +27,8 @@ class CalendarAdapter(
                 return oldItem.isSelected == newItem.isSelected &&
                         oldItem.day == newItem.day &&
                         oldItem.date == newItem.date &&
-                        oldItem.isPartOfCurrentMonth == newItem.isPartOfCurrentMonth
+                        oldItem.isPartOfCurrentMonth == newItem.isPartOfCurrentMonth &&
+                        oldItem.taskCount == newItem.taskCount
             }
         }
     }
