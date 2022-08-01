@@ -6,34 +6,20 @@
     android:layout_height="wrap_content"
     android:padding="12dp">
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/TextViewLato.Large.Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:maxLines="1"
-        android:text="Add new task"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <EditText
         android:id="@+id/etTitle"
         style="@style/TextViewLato.Medium.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:background="@drawable/gray_background"
         android:hint="Title"
+        android:layout_marginTop="24dp"
         android:paddingHorizontal="12dp"
         android:paddingVertical="12dp"
         android:textAlignment="viewStart"
         android:textColor="@color/brown"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="12dp" />
 
     <EditText
@@ -54,18 +40,6 @@
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 
-    <EditText
-        android:id="@+id/etTags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/gray_background"
-        android:hint="Tag ex: Work, Office, Home"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/etDescription"
-        tools:layout_editor_absoluteX="12dp" />
-
     <Button
         android:id="@+id/addTaskButton"
         style="@style/TextViewLato.XSmall.Bold"
@@ -74,9 +48,9 @@
         android:layout_marginTop="12dp"
         android:paddingHorizontal="12dp"
         android:paddingVertical="12dp"
-        android:text="Save"
+        android:text="+  Add Task"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/etTags" />
+        app:layout_constraintTop_toBottomOf="@+id/etDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
